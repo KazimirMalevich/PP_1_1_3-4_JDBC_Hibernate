@@ -34,7 +34,7 @@ private static volatile Util instance;
     public static Util getInstance() {
         Util localInstance = instance;
         if (localInstance == null) {
-            synchronized (Connection.class) {
+            synchronized (Util.class) {
                 localInstance = instance;
                 if (localInstance == null) {
                     instance = localInstance = new Util() {
