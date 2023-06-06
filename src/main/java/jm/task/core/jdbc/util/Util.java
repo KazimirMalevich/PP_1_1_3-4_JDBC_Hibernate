@@ -1,5 +1,7 @@
 package jm.task.core.jdbc.util;
 
+import com.mysql.cj.jdbc.ConnectionImpl;
+
 import java.sql.Connection;
 import java.sql.Driver;
 import java.sql.DriverManager;
@@ -9,7 +11,8 @@ public class Util {
     private static final String URL = "jdbc:mysql://localhost:3306/mydb";
     private static final String USERNAME = "root";
     private static final String PASSWORD = "root";
-    private static Connection connection;
+
+private static volatile Util instance;
 
     public static Connection getConnection() {
         Connection connection = null;
@@ -26,5 +29,19 @@ public class Util {
             e.printStackTrace();
         }
         return connection;
+    }
+
+    public static Util getInstance() {
+        Util localInstance = instance;
+        if (localInstance == null) {
+            synchronized (Connection.class) {
+                localInstance = instance;
+                if (localInstance == null) {
+                    instance = localInstance = new Util() {
+                    };
+                }
+            }
+        }
+        return localInstance;
     }
 }
